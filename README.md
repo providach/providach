@@ -9,7 +9,7 @@ npm install
 npm run dev
 ```
 
-Validation: `npm run lint`, `npx tsc --noEmit`, `npm run build`. Production: `npm start`. Development output uses `.next/`; production builds use `.next-production/` so a running development preview does not overwrite production verification.
+Validation: `npm run lint`, `npx tsc --noEmit`, `npm run build`. Production: `npm start`. Development output uses `.next/`; local production builds use `.next-production/` so a running development preview does not overwrite production verification. Vercel builds (`VERCEL=1`) use the standard `.next/` output expected by the Next.js deployment adapter. Keep Vercel’s Framework Preset set to Next.js and its Output Directory at the framework default.
 
 ## Consultation delivery
 
