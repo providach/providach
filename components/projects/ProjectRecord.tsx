@@ -1,0 +1,11 @@
+import Image from 'next/image';
+import Link from 'next/link';
+import {ArrowUpRight} from 'lucide-react';
+import {BookButton} from '../Consultation';
+import type {PortfolioProject} from './projectContent';
+
+export function ProjectRecord({project}:{project:PortfolioProject}){return <article id={`project-${project.id}`} className={`portfolio-record portfolio-record--${project.layout}`} aria-labelledby={`record-title-${project.id}`}>
+ <header className="portfolio-record-header"><span className="portfolio-record-number" aria-hidden="true">{project.number}</span><div><p className="eyebrow">{project.featured?'Featured engagement':project.industry??'Additional project experience'} / Selected work</p><h3 id={`record-title-${project.id}`}>{project.title}</h3></div>{project.year&&<span className="portfolio-record-year">{project.year}</span>}</header>
+ <div className="portfolio-record-frame"><div className="portfolio-record-photo"><Image src={project.image.src} alt={project.image.alt} fill sizes="(max-width: 800px) 100vw, 62vw"/><div className="portfolio-record-photo-shade"/><span className="portfolio-photo-disclosure">Illustrative photography</span><span className="portfolio-image-caption">{project.industry??(project.layout==='connectivity'?'Connectivity & network solutions':'Application & software development')}</span></div><div className="portfolio-record-narrative"><span className="portfolio-record-rule"/><h4>{project.headline}</h4>{project.summary.map(paragraph=><p key={paragraph}>{paragraph}</p>)}<dl className="portfolio-record-metadata"><div><dt>Known scope</dt><dd>{project.services.join(' · ')}</dd></div>{project.location&&<div><dt>Location</dt><dd>{project.location}</dd></div>}</dl><BookButton service={project.bookingService} className="portfolio-record-book">Discuss similar requirements</BookButton>{project.hasCaseStudy&&project.caseStudyHref&&<Link className="text-link" href={project.caseStudyHref}>Explore Project <ArrowUpRight size={16}/></Link>}</div></div>
+ <div className="portfolio-record-related"><span className="eyebrow">Related expertise</span><div>{project.relatedServices.map(service=><Link key={service.href} href={service.href}>{service.label}<ArrowUpRight size={13}/></Link>)}</div></div>
+ </article>}

@@ -1,0 +1,14 @@
+'use client';
+
+import {useState} from 'react';
+import {AnimatePresence,motion,useReducedMotion} from 'motion/react';
+import {projectCategories,type ProjectCategory} from './projectContent';
+import {Reveal} from '../Experience';
+
+type RecordIndex={id:string;categories:Exclude<ProjectCategory,'all'>[]};
+export function PortfolioCollection({records,children}:{records:RecordIndex[];children:React.ReactNode[]}){
+ const[category,setCategory]=useState<ProjectCategory>('all');
+ const reduced=useReducedMotion();
+ const visible=records.map((record,index)=>({record,index})).filter(({record})=>category==='all'||record.categories.includes(category));
+ return <section id="portfolio-collection" className="portfolio-collection portfolio-section"><div className="wrap"><Reveal><div className="portfolio-chapter-marker"><span className="eyebrow">02 / A curated record of experience</span><span/><span>Where expertise becomes reality</span></div><div className="portfolio-section-heading"><h2>Different settings.<br/><span>A considered involvement.</span></h2><p>Explore our supplied project experience by environment or discipline. Each record reflects the scope of information available.</p></div></Reveal><div className="portfolio-filter-bar"><div className="portfolio-filter-buttons" role="group" aria-label="Filter projects">{projectCategories.map(item=><button key={item.id} aria-pressed={category===item.id} onClick={()=>setCategory(item.id)}>{item.label}{category===item.id&&<motion.span className="portfolio-filter-indicator" layoutId="portfolio-filter-indicator" transition={{duration:reduced?0:.4,ease:[.22,1,.36,1]}}/>}</button>)}</div><label className="portfolio-mobile-filter">Explore the collection<select aria-label="Filter projects by category" value={category} onChange={event=>setCategory(event.target.value as ProjectCategory)}>{projectCategories.map(item=><option key={item.id} value={item.id}>{item.label}</option>)}</select></label><span className="portfolio-result-count" role="status" aria-live="polite">Showing {String(visible.length).padStart(2,'0')} of {String(records.length).padStart(2,'0')}</span></div><div className="portfolio-records"><AnimatePresence initial={false} mode="popLayout">{visible.map(({record,index})=><motion.div key={record.id} className="portfolio-record-shell" layout={reduced?false:'position'} initial={reduced?false:{opacity:0,y:18}} animate={{opacity:1,y:0}} exit={{opacity:0,y:reduced?0:-10}} transition={{duration:reduced?0:.45,ease:[.22,1,.36,1]}}>{children[index]}</motion.div>)}</AnimatePresence></div><div className="portfolio-collection-colophon"><p>Project details are limited to supplied information. Photography is illustrative and does not document the engagements shown.</p><span>Considered expertise.<br/>Real-world involvement.</span></div></div></section>
+}
