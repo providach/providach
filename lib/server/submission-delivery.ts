@@ -1,16 +1,19 @@
 import 'server-only';
 import {mkdir,open,readFile} from 'node:fs/promises';
 import path from 'node:path';
+import {submissionEmails} from './submission-emails';
 
 export class DeliveryUnavailableError extends Error{}
-type DeliveryInput={record:Record<string,string>;replyTo:string;subject:string;idempotencyKey?:string};
-export async function deliverSubmission({record,replyTo,subject,idempotencyKey}:DeliveryInput):Promise<'email'|'stored'>{
+type DeliveryInput={record:Record<string,string>;replyTo:string;idempotencyKey?:string};
+export async function deliverSubmission({record,replyTo,idempotencyKey}:DeliveryInput):Promise<'email'|'stored'>{
  const apiKey=process.env.RESEND_API_KEY;
  const from=process.env.CONSULTATION_FROM;
  const to=process.env.CONSULTATION_TO;
  if(apiKey&&from&&to){
-  const response=await fetch('https://api.resend.com/emails',{method:'POST',headers:{Authorization:`Bearer ${apiKey}`,'Content-Type':'application/json','Idempotency-Key':idempotencyKey??record.id},body:JSON.stringify({from,to:[to],reply_to:replyTo,subject,text:Object.entries(record).filter(([key])=>!idempotencyKey||key!=='receivedAt').map(([key,value])=>`${key}: ${value}`).join('\n')}),signal:AbortSignal.timeout(12000)});
+  const response=await fetch('https://api.resend.com/emails/batch',{method:'POST',headers:{Authorization:`Bearer ${apiKey}`,'Content-Type':'application/json','Idempotency-Key':`submission-v2/${idempotencyKey??record.id}`},body:JSON.stringify(submissionEmails(record,from,to,replyTo)),signal:AbortSignal.timeout(15000)});
   if(!response.ok){console.error('[Providach] email_delivery_failed',{status:response.status,submissionId:record.id});throw new Error('Email delivery failed')}
+  const result=await response.json();
+  if(!Array.isArray(result.data)||result.data.length!==2||result.data.some((item:{id?:unknown})=>typeof item?.id!=='string'))throw new Error('Email acceptance could not be confirmed');
   return 'email';
  }
  const storage=process.env.CONSULTATION_STORAGE_DIR;

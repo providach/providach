@@ -39,7 +39,7 @@ export async function POST(req:NextRequest){
   if(existing){const result=await existing.result;return NextResponse.json({received:true,id:result.id},{status:200})}
   if(submissions.size>=500)return NextResponse.json({error:'Enquiries are temporarily busy. Please try again shortly.'},{status:503});
   const record={id:requestKey??crypto.randomUUID(),receivedAt:new Date().toISOString(),...parsed.data,type:'enquiry',status:'received'};
-  const result=deliverSubmission({record,replyTo:parsed.data.email,subject:'Providach project enquiry',idempotencyKey:requestKey??record.id}).then(()=>({id:record.id}));
+  const result=deliverSubmission({record,replyTo:parsed.data.email,idempotencyKey:requestKey??record.id}).then(()=>({id:record.id}));
   if(requestKey)submissions.set(requestKey,{fingerprint,expires:now+1800000,result});
   await result;
   return NextResponse.json({received:true,id:record.id},{status:201});
