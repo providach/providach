@@ -996,3 +996,146 @@ body{font-size:16px}
  .enquiry-form-heading{flex-wrap:wrap}
  .enquiry-form-heading>span:last-child{max-width:none;text-align:left}
 }
+
+/* Larger type needs flexible tracks and content-driven section heights. */
+main,footer{overflow-wrap:anywhere}
+:where(main,footer,dialog) *{min-width:0}
+:where(.button,.btn,.text-link) svg,
+:where(.mobile-nav,.header-inner,.consultation-progress) button,
+.discover-arrow,.welcome-play-icon,.atelier-control-icon{flex-shrink:0}
+.atelier-kicker .eyebrow,.expertise-overline .eyebrow,
+.approach-section-marker .eyebrow,.footer-opening-label .eyebrow,
+.portfolio-record-related>.eyebrow{white-space:normal}
+.atelier-kicker,.expertise-overline,.approach-section-marker,
+.footer-opening-label,.footer-brand-line{flex-wrap:wrap;row-gap:16px}
+.consultation-wordmark,.welcome-signature{flex-wrap:wrap;row-gap:8px}
+.enquiry-field input,.enquiry-field select,.enquiry-field textarea,
+.consultation-fields input,.consultation-fields select,.consultation-fields textarea{max-width:100%}
+.welcome-player{max-width:calc(100% - 28px)}
+.welcome-player-label{width:160px;flex:1 1 160px}
+.welcome-player-time{flex-shrink:0}
+.consultation-progress{flex-wrap:wrap;row-gap:14px}
+.consultation-progress>button>span:first-child{flex-shrink:0}
+.consultation-receipt-detail{grid-template-columns:minmax(0,1fr) auto}
+
+@media(max-width:1000px){
+ .welcome-composition{display:block}
+ .welcome-sound-scene{display:none}
+ .welcome-content{padding:60px 32px 28px}
+ .welcome-content>p{max-width:none}
+ .welcome-close{background:var(--ivory);color:var(--green);border-color:#123b3525}
+ .consultation-suite-layout{display:block;min-height:0}
+ .consultation-story{position:relative;top:auto;min-height:0;height:auto;padding:30px}
+ .consultation-story-copy{padding-top:25px}
+ .consultation-story-copy>p{max-width:600px}
+ .consultation-story h2 br{display:none}
+ .consultation-art,.consultation-story-foot{display:none}
+ .consultation-workspace{padding:28px 30px}
+ .consultation-close{position:absolute;top:16px;right:16px;background:var(--green);color:var(--ivory)}
+ .consultation-wordmark{padding-right:34px;letter-spacing:.1em}
+}
+
+/* Opening text can grow rather than getting cut off by the viewport. */
+@media(max-width:800px),(max-height:700px){
+ .intro-held{position:relative;height:auto;min-height:100svh;overflow:visible}
+ .intro-held-content{position:relative;inset:auto}
+ .hero.hero-architectural{height:auto;min-height:100svh}
+ .hero-architectural .hero-content,
+ :is(.about-opening,.services-opening,.portfolio-opening,.contact-opening) .hero-architectural .hero-content{
+  height:auto;min-height:100svh;padding-top:125px;padding-bottom:145px;justify-content:center;
+ }
+ .hero-architectural .hero-actions{flex-wrap:wrap}
+ .hero-side-note{display:none}
+}
+
+/* Use normal document flow for projects on phones, tablets and short screens. */
+@media(max-width:800px),(max-height:750px){
+ .projects-horizontal{padding-top:100px}
+ .project-scroll-range{height:auto}
+ .project-stage{position:relative;top:auto;height:auto}
+ .project-stage-inner{height:auto;padding-top:25px;padding-bottom:45px}
+ .project-journey-heading{align-items:start}
+ .project-track-window{overflow:visible;flex:none}
+ .project-horizontal-track{width:100%;height:auto;display:block;transform:none!important;will-change:auto}
+ .project-slide{display:grid;grid-template-columns:minmax(0,1fr);width:100%;height:auto;min-height:0;gap:24px;margin-bottom:55px;overflow:visible}
+ .project-slide:last-child{margin-bottom:0}
+ .project-slide-photo{height:clamp(260px,55vw,430px);min-height:260px;flex:none}
+ .project-slide-copy{display:block;height:auto;position:relative;padding-block:0}
+ .project-slide-copy>div{padding:0 0 0 45px}
+ .project-slide-number{position:absolute;top:0;left:0;font-size:28px}
+ .project-slide-number>span{display:none}
+ .project-slide-copy .eyebrow{display:block;margin-bottom:10px}
+ .project-slide-copy h3{font-size:clamp(28px,5vw,40px);line-height:1.2}
+ .project-slide-scope{flex-direction:row;flex-wrap:wrap;margin-top:16px;padding-top:14px;gap:12px}
+ .project-slide-scope>p{font-size:16px;max-width:none;flex:1 1 200px}
+ .project-slide-copy .text-link{margin-top:12px}
+ .project-slide-note{display:block;padding-left:45px;margin-top:16px}
+ .project-journey-controls{display:none}
+}
+
+@media(max-width:800px){
+ .expertise-collection{grid-template-columns:minmax(0,1fr);gap:40px}
+ .expertise-portrait{max-width:520px;width:100%;margin-inline:auto}
+ .expertise-index-footer{flex-wrap:wrap}
+ .approach-journey{display:block}
+ .approach-compass{position:relative;top:auto;max-width:320px;margin-bottom:40px}
+ .approach-intro h2{font-size:clamp(34px,6vw,48px)}
+ .approach-stage-heading{flex-wrap:wrap}
+ .approach-stage-heading h3{font-size:clamp(30px,6vw,43px)}
+ .approach-stage-index{display:none}
+ .approach-stage-meta{flex-wrap:wrap;gap:8px 18px}
+ .approach-stage-meta>span:last-child{max-width:none;text-align:left}
+ .approach-timeline-end>.text-link{white-space:normal}
+ .portfolio-filter-bar,.portfolio-filter-buttons,.portfolio-record-related{flex-wrap:wrap}
+ .portfolio-filter-buttons>button,.portfolio-result-count{white-space:normal}
+}
+
+@media(max-width:600px){
+ .hero-architectural .eyebrow{letter-spacing:.1em;max-width:100%;line-height:1.7}
+ .hero-architectural h1,
+ :is(.about-opening,.services-opening,.portfolio-opening,.contact-opening) .hero-architectural h1{font-size:clamp(30px,8.5vw,46px)}
+ .hero-architectural .hero-actions{width:100%;align-items:start;flex-direction:column}
+ .hero-architectural .button{max-width:100%;gap:16px}
+ .hero-discover{right:22px;font-size:14px;letter-spacing:.02em}
+ .atelier-viewer{height:auto;min-height:0;max-height:none;padding:26px 24px}
+ .atelier-viewer-top{position:relative;inset:auto;gap:16px;align-items:start}
+ .atelier-viewer-top>.eyebrow{flex:1}
+ .atelier-view-index{flex-shrink:0}
+ .atelier-scene-copy{position:relative;inset:auto;padding:60px 0 0;max-width:none}
+ .atelier-scene-copy h3{font-size:clamp(30px,8vw,38px)}
+ .atelier-reveal-control{position:relative;inset:auto;margin-top:26px;max-width:100%;text-align:left}
+ .atelier-tablist{flex-wrap:wrap}
+ .atelier-tablist>button{flex:1 1 90px}
+ .expertise-chapters{grid-template-columns:minmax(0,1fr)}
+ .expertise-chapters>button{flex-direction:row;gap:16px;padding:16px 0;border-bottom:1px solid #ffffff25}
+ .expertise-index-footer{align-items:start;flex-direction:column;gap:18px}
+ .expertise-photo-top{flex-wrap:wrap;gap:10px;right:20px}
+ .expertise-portrait-caption{flex-wrap:wrap;gap:8px 16px}
+ .approach-compass{display:block;max-width:none;text-align:left}
+ .approach-compass>.eyebrow{padding-top:0}
+ .approach-dial{width:min(200px,100%);margin:20px auto}
+ .approach-compass-caption{align-items:start}
+ .approach-compass-caption>p{max-width:none}
+ .approach-compass-note{margin-top:14px}
+ .footer-directory{grid-template-columns:minmax(0,1fr);gap:30px}
+ .footer-positioning{grid-column:auto}
+ .footer-invitation{flex-wrap:wrap;gap:28px}
+ .footer-invitation h2{font-size:clamp(56px,16vw,90px)}
+ .footer-invitation-aside{grid-template-columns:66px minmax(0,1fr);align-items:center}
+ .footer-orbit-caption{grid-column:2;grid-row:1}
+ .footer-brand-line{align-items:start}
+ .footer-brand-line>.eyebrow{max-width:none;flex:1 1 180px}
+ .footer-return{max-width:none}
+ .footer-return>span:first-child{max-width:none}
+ .footer-imprint>span:nth-child(2){max-width:none;text-align:left}
+ .contact-channel-directory>a>span:nth-child(2){font-size:clamp(20px,5vw,28px)}
+ .consultation-workspace{padding:24px 20px}
+ .consultation-fields{grid-template-columns:minmax(0,1fr)}
+ .consultation-form-actions{flex-wrap:wrap}
+ .consultation-submit{width:100%;max-width:100%}
+ .consultation-contact-summary,.consultation-receipt-detail{grid-template-columns:minmax(0,1fr)}
+ .welcome-content{padding:58px 22px 24px}
+ .welcome-content h2{font-size:clamp(28px,8vw,35px)}
+ .welcome-play{gap:10px;padding-inline:12px}
+ .welcome-listening-note svg{flex-shrink:0}
+}
