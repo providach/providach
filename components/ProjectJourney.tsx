@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import {useRef,useState,useSyncExternalStore} from 'react';
+import {useEffect,useRef,useState,useSyncExternalStore} from 'react';
 import {motion,useMotionValueEvent,useScroll,useTransform} from 'motion/react';
 import {ArrowLeft,ArrowRight,ArrowUpRight,MoveRight} from 'lucide-react';
 
@@ -12,18 +12,21 @@ const selectedProjects=[
  {name:'Reportage Hotels, Lagos',scope:'IT Consultancy',year:null,image:'workplace',label:'Understanding first. Confidence follows.'},
 ];
 const stops=[.09,.48,.9];
-function subscribeToStaticJourney(callback:()=>void){const media=window.matchMedia('(prefers-reduced-motion: reduce), (max-width: 800px), (max-height: 750px)');media.addEventListener('change',callback);return()=>media.removeEventListener('change',callback)}
-function readStaticJourney(){return window.matchMedia('(prefers-reduced-motion: reduce), (max-width: 800px), (max-height: 750px)').matches}
+function subscribeToStaticJourney(callback:()=>void){const media=window.matchMedia('(prefers-reduced-motion: reduce)');media.addEventListener('change',callback);return()=>media.removeEventListener('change',callback)}
+function readStaticJourney(){return window.matchMedia('(prefers-reduced-motion: reduce)').matches}
 
 export function ProjectJourney(){
  const range=useRef<HTMLDivElement>(null);
+ const stage=useRef<HTMLDivElement>(null);
+ const[stageLayout,setStageLayout]=useState({top:78,minRangeHeight:0});
+ useEffect(()=>{const node=stage.current;if(!node)return;const measure=()=>{const height=node.getBoundingClientRect().height;setStageLayout({top:Math.min(78,window.innerHeight-height),minRangeHeight:height+window.innerHeight*2})};const observer=new ResizeObserver(measure);observer.observe(node);window.addEventListener('resize',measure);measure();return()=>{observer.disconnect();window.removeEventListener('resize',measure)}},[]);
  const[active,setActive]=useState(0);
  const staticJourney=useSyncExternalStore(subscribeToStaticJourney,readStaticJourney,()=>false);
  const{scrollYProgress}=useScroll({target:range,offset:['start 78px','end end']});
  const x=useTransform(scrollYProgress,[0,.18,.39,.58,.8,1],['0%','0%','-33.333333%','-33.333333%','-66.666667%','-66.666667%']);
  useMotionValueEvent(scrollYProgress,'change',value=>setActive(value>=.69?2:value>=.285?1:0));
  function goTo(index:number){const node=range.current;if(!node)return;const travel=node.offsetHeight-(window.innerHeight-78);const start=node.getBoundingClientRect().top+window.scrollY-78;window.scrollTo({top:start+travel*stops[index],behavior:staticJourney?'auto':'smooth'})}
- return <section id="selected-projects" className="projects-horizontal" aria-labelledby="projects-title"><div ref={range} className="project-scroll-range"><div className="project-stage"><div className="project-stage-inner wrap">
+ return <section id="selected-projects" className="projects-horizontal" aria-labelledby="projects-title"><div ref={range} className="project-scroll-range" style={staticJourney?undefined:{minHeight:stageLayout.minRangeHeight}}><div ref={stage} className="project-stage" style={staticJourney?undefined:{top:stageLayout.top}}><div className="project-stage-inner wrap">
   <div className="project-journey-heading"><div><p className="eyebrow">03 / Selected experience</p><h2 id="projects-title">Experience, <span>in perspective.</span></h2></div><Link href="/projects" className="text-link">View All Projects <ArrowUpRight size={16}/></Link></div>
   <div className="project-track-window"><motion.div className="project-horizontal-track" style={{x:staticJourney?0:x}}>{selectedProjects.map((project,index)=><article key={project.name} className="project-slide" aria-label={`${index+1} of 3: ${project.name}`} aria-hidden={staticJourney?undefined:active!==index} inert={staticJourney?undefined:active!==index}>
    <div className="project-slide-photo"><Image src={`/images/editorial/${project.image}.jpg`} alt={`Illustrative environment; not a photograph of ${project.name}`} fill sizes="(max-width: 700px) 100vw, 65vw"/><div className="project-slide-shade"/><span className="project-slide-photo-label">Hospitality / Selected engagement</span><span className="project-slide-signature">{project.label}</span><Link href="/projects" className="project-slide-explore" aria-label={`View project experience: ${project.name}`}><ArrowUpRight size={23}/></Link></div>
